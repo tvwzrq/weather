@@ -1,6 +1,7 @@
 package com.example.weather;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +26,12 @@ import com.example.weather.util.HandleUtil;
 import com.example.weather.util.HttpUtil;
 
 import org.litepal.LitePal;
-import org.litepal.crud.LitePalSupport;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import javax.crypto.Cipher;
 
@@ -57,6 +56,7 @@ public class chooseLayoutFragment extends Fragment {
     private List<Provincedb> provincedbs;
     private List<Citydb> citydbs;
     private List<Countydb> countydbs;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -237,6 +237,12 @@ public class chooseLayoutFragment extends Fragment {
                         Log.d("currentlevel",current_level+"");
                         selectedcity=citydbs.get(holder.getBindingAdapterPosition());
                         querycounties();
+                    }else if (current_level==LEVEL_COUNTY){
+                        Intent intent=new Intent(getActivity(),Weather_Activity.class);
+                        String weatherid=countydbs.get(holder.getBindingAdapterPosition()).getWeatherid();
+                        intent.putExtra("weatherid",weatherid);
+                        startActivity(intent);
+                        getActivity().finish();
                     }
 
                 }
